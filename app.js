@@ -37,11 +37,9 @@ document.addEventListener("drop", (e) => {
 
     if ( action.slot === "empty" ) {
         // If dragging an action from the list
-        if ( e.target.classList.contains("container") || 
-            e.target.parentNode.classList.contains("container") ) {
-            // If valid drop location
+        if ( e.target.classList.contains("container") || e.target.classList.contains("child") ) {
             let destination = e.target;
-            if ( e.target.parentNode.classList.contains("container") ) {
+            if ( e.target.classList.contains("child") ) {
                 // If slot already filled, remove sibling first
                 const sibling = e.target.parentNode.querySelector("[data-skill]");
                 destination = e.target.parentNode;
@@ -59,7 +57,7 @@ document.addEventListener("drop", (e) => {
         // If dragging an action from the hotbars
         if ( e.target.classList.contains("container") ) {
             e.target.appendChild(node);
-        } else if ( e.target.parentNode.classList.contains("container") ) {
+        } else if ( e.target.classList.contains("child") ) {
             const sibling = e.target.parentNode.querySelector("[data-skill]"),
                 destination = document.querySelector(`[data-slot="${action.slot}"]`);
     
@@ -69,5 +67,5 @@ document.addEventListener("drop", (e) => {
             // ..to invalid space
             node.remove();
         }
-    } 
+    }
 });
