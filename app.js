@@ -33,8 +33,6 @@ document.addEventListener("drop", (e) => {
         style: e.dataTransfer.getData("css")
     };
 
-    const node = document.querySelector(`[data-slot="${action.slot}"] > [data-skill="${action.name}"]`);
-
     if ( action.slot === "empty" ) {
         // If dragging an action from the list
         if ( e.target.classList.contains("container") || e.target.classList.contains("child") ) {
@@ -55,6 +53,8 @@ document.addEventListener("drop", (e) => {
         }
     } else {
         // If dragging an action from the hotbars
+        const node = document.querySelector(`[data-slot="${action.slot}"] > [data-skill="${action.name}"]`);
+
         if ( e.target.classList.contains("container") ) {
             e.target.appendChild(node);
         } else if ( e.target.classList.contains("child") ) {
