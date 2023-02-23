@@ -13,6 +13,15 @@ for (let i=0; i<24; i++) {
     initItem(action);
 }
 
+document.addEventListener("dragover", (e) => { e.preventDefault() } );
+document.addEventListener("drop", (e) => {
+    const action = JSON.parse(e.dataTransfer.getData("text/plain"));
+    if ( action.slot == "empty" ) return;
+
+    const node = document.querySelector(`[data-slot="${action.slot}"] > [data-skill="${action.name}"]`);
+    node.remove();
+})
+
 document.querySelectorAll("#slots > .container").forEach(node => {
     // Shift click to remove element
     node.addEventListener("click", (e) => {
@@ -26,6 +35,9 @@ document.querySelectorAll("#slots > .container").forEach(node => {
     node.addEventListener("dragover", (e) => { e.preventDefault() });
     
     node.addEventListener("drop", (e) => {
+        // Prevent bubbling up to document
+        e.stopPropagation();
+
         // Parse payload's content
         const action = JSON.parse(e.dataTransfer.getData("text/plain"));
 
