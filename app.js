@@ -27,7 +27,7 @@ document.querySelectorAll("#slots > .container").forEach(node => {
     
     node.addEventListener("drop", (e) => {
         // Parse payload's content
-        const action = JSON.parse(e.dataTransfer.getData("Payload"));
+        const action = JSON.parse(e.dataTransfer.getData("text/plain"));
 
         if ( action.slot === "empty" ) {
             // If dragging an action from the list
@@ -66,10 +66,23 @@ document.querySelectorAll("#slots > .container").forEach(node => {
 
 function initItem(i) {
     i.addEventListener("dragstart", (e) => {
-        e.dataTransfer.setData("Payload", JSON.stringify({
+        e.dataTransfer.clearData();
+        clearSelection();
+
+        e.dataTransfer.setData("text/plain", JSON.stringify({
             name: e.target.getAttribute("data-skill"),
             slot: e.target.parentNode.getAttribute("data-slot") || "empty",
             style: e.target.getAttribute("style")
         }));
     })
+}
+
+// https://stackoverflow.com/a/880518/21273012
+function clearSelection() {
+    if(document.selection && document.selection.empty) {
+        document.selection.empty();
+    } else if(window.getSelection) {
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+    }
 }
